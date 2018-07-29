@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/idindrakusuma/learning-node-async-weather-app#readme",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "request": "^2.73.0"
   }
 }
