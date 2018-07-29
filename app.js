@@ -1,9 +1,23 @@
+/* import the modules */
 const request = require('request');
-require('dotenv').config()
+const yargs = require('yargs');
 
-request({
-  url: 'https://maps.googleapis.com/maps/api/geocode/json?address=1301%20lombard%20street%20philadelphia&key=' + process.env.API_KEY,
-  json: true
-}, (error, response, body) => {
-  console.log(body)
-});
+/* import the own modules */
+const geocode = require('./geocode/geocode');
+
+/* Set the yargs option */
+const argv = yargs
+  .options({
+    address: {
+      describe: 'Input your address',
+      alias: 'a',
+      demand: true,
+      string: true
+    }
+  })
+  .help()
+  .alias('help', 'h')
+  .argv;
+
+/* Execute the the address */
+geocode.address(argv.address);
