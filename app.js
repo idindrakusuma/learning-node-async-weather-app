@@ -20,4 +20,10 @@ const argv = yargs
   .argv;
 
 /* Execute the the address */
-geocode.address(argv.address);
+geocode.address(argv.address, (errorMessage, result) => {
+  if(errorMessage) {
+    console.log(errorMessage);
+  } else {
+    console.log(JSON.stringify(result, undefined, 2));
+  }
+});

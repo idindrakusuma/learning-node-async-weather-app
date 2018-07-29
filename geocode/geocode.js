@@ -5,10 +5,9 @@ const request = require('request');
 const API_HOST = process.env.API_HOST;
 const API_KEY = process.env.API_KEY;
 
-let address = (addr) => {
+let address = (addr, callback) => {
   /* Encode the URI */
   let encodeAddress = encodeURIComponent(addr);
-  
   /* GET REQUEST */
   request({
     url: `${API_HOST}address=${encodeAddress}&key=${API_KEY}`,
@@ -16,19 +15,20 @@ let address = (addr) => {
   }, (error, response, body) => {
     /* can connect to server? */
     if(error) {
-      return console.log('Unable to connect to Google Maps API');
+      callback('Unable to connect to Google Maps API');
     } 
     /* is success result? */
     if (body.status === 'ZERO_RESULTS') {
-      return console.log('Address not found!');
+      callback('Unable to find that address!');
     }
     /* is Success? */
     else if (body.status === 'OK') {
       let data = body.results[0];
-      console.log(`Address: ${data.formatted_address}`);
-      console.log(`Location Lat: ${data.geometry.location.lat}`);
-      console.log(`Location Lng: ${data.geometry.location.lng}`);
-      return
+      callback(undefined, {
+        address: data.formatted_address,
+        location_lat: data.geometry.location.lat,
+        location_lng: data.geometry.location.lng
+      })
     }
   });
 };
