@@ -2,15 +2,12 @@
 require('dotenv').config();
 const request = require('request');
 
-const API_HOST = process.env.API_HOST;
-const API_KEY = process.env.API_KEY;
-
 let address = (addr, callback) => {
   /* Encode the URI */
   let encodeAddress = encodeURIComponent(addr);
   /* GET REQUEST */
   request({
-    url: `${API_HOST}address=${encodeAddress}&key=${API_KEY}`,
+    url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeAddress}&key=${process.env.MAPS_API_KEY}`,
     json: true
   }, (error, response, body) => {
     /* can connect to server? */
@@ -33,6 +30,10 @@ let address = (addr, callback) => {
   });
 };
 
+let forecast = (latitude, longitude) => {
+  address()
+}
 module.exports = {
-  address
+  address,
+  forecast
 }
