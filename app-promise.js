@@ -25,6 +25,10 @@ const argv = yargs
 /* Make request with axios */
 axios.get(`${MAPS_HOST}address=${argv.address}&key=${MAPS_API_KEY}`)
     .then(res => {
+        /* Set loading.. */
+        if(res.data.status === 'ZERO_RESULTS') {
+            throw('Unable to find the address!');
+        }
         let get = res.data.results[0];
         console.log('-----');
         console.log('Location: ', get.formatted_address);
@@ -36,5 +40,9 @@ axios.get(`${MAPS_HOST}address=${argv.address}&key=${MAPS_API_KEY}`)
         console.log(`The weather is ${get.summary} at Temperature ${get.temperature} but it's like ${get.apparentTemperature}`);
     })
     .catch(error => {
-        console.log(error)
+        if(error.code === 'ENOTFOUND') {
+            console.log('Unable to connect to API Servers');
+        } else {
+            console.log(error)
+        }
     })
